@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flow Process Chart (FPC)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .symbol {
+            font-size: 20px;
+        }
+
+        .operation {
+            color: green;
+        }
+
+        .transportation {
+            color: blue;
+        }
+
+        .inspection {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Flow Process Chart (FPC) - Pembuatan Raket Badminton</h1>
+
+    <h2>1. Kepala Raket (O-01)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Urutan Proses</th>
+                <th>Simbol</th>
+                <th>Mesin/Alat/Tempat</th>
+                <th>Waktu (detik)</th>
+            </tr>
+        </thead>
+        <tbody id="headRacketTable"></tbody>
+    </table>
+
+    <h2>2. Batang Raket (O-02)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Urutan Proses</th>
+                <th>Simbol</th>
+                <th>Mesin/Alat/Tempat</th>
+                <th>Waktu (detik)</th>
+            </tr>
+        </thead>
+        <tbody id="shaftRacketTable"></tbody>
+    </table>
+
+    <h2>3. Pegangan Raket (O-03)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Urutan Proses</th>
+                <th>Simbol</th>
+                <th>Mesin/Alat/Tempat</th>
+                <th>Waktu (detik)</th>
+            </tr>
+        </thead>
+        <tbody id="handleRacketTable"></tbody>
+    </table>
+
+    <h2>4. Perakitan</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Urutan Proses</th>
+                <th>Simbol</th>
+                <th>Mesin/Alat/Tempat</th>
+                <th>Waktu (detik)</th>
+            </tr>
+        </thead>
+        <tbody id="assemblyTable"></tbody>
+    </table>
+
+    <script>
+        const headRacketData = [
+            { no: 1, process: "Pemotongan", symbol: "⬤", type: "operation", tool: "Gergaji Mesin", time: 300 },
+            { no: 2, process: "Penggarisan Lubang", symbol: "🠆", type: "transportation", tool: "Pensil", time: 600 },
+            { no: 3, process: "Pembengkokan Oval", symbol: "⬤", type: "operation", tool: "Alat Bending", time: 400 },
+            { no: 4, process: "Pemasangan Lubang Senar", symbol: "⬤", type: "operation", tool: "Bor Bit", time: 250 },
+            { no: 5, process: "Penghalusan", symbol: "⬤", type: "operation", tool: "Amplas", time: 350 },
+            { no: 6, process: "Pemeriksaan", symbol: "◇", type: "inspection", tool: "Meja Periksa", time: 150 }
+        ];
+
+        const shaftRacketData = [
+            { no: 1, process: "Pemotongan", symbol: "⬤", type: "operation", tool: "Gergaji Mesin", time: 300 },
+            { no: 2, process: "Pewarnaan Logam", symbol: "⬤", type: "operation", tool: "Cairan Elektrolisis", time: 450 },
+            { no: 3, process: "Pengecatan", symbol: "⬤", type: "operation", tool: "Cat Air Basah", time: 300 },
+            { no: 4, process: "Pengeringan", symbol: "🠆", type: "transportation", tool: "Mesin Pengering", time: 600 },
+            { no: 5, process: "Pemeriksaan", symbol: "◇", type: "inspection", tool: "Meja Periksa", time: 150 }
+        ];
+
+        const handleRacketData = [
+            { no: 1, process: "Pemotongan", symbol: "⬤", type: "operation", tool: "Gergaji Mesin", time: 300 },
+            { no: 2, process: "Pembentukan Tongkat", symbol: "⬤", type: "operation", tool: "Palu", time: 200 },
+            { no: 3, process: "Pelubangan", symbol: "⬤", type: "operation", tool: "Bor Bit", time: 200 },
+            { no: 4, process: "Pemeriksaan", symbol: "◇", type: "inspection", tool: "Meja Periksa", time: 150 }
+        ];
+
+        const assemblyData = [
+            { no: 1, process: "O-01 dirakit dengan O-02", symbol: "⬤", type: "operation", tool: "Clamp, Lem", time: 250 },
+            { no: 2, process: "Ass 1 dirakit dengan O-03", symbol: "⬤", type: "operation", tool: "Clamp, Lem", time: 250 },
+            { no: 3, process: "Pemeriksaan Akhir", symbol: "◇", type: "inspection", tool: "Meja Periksa", time: 150 },
+            { no: 4, process: "Penyimpanan", symbol: "🠆", type: "transportation", tool: "Gudang", time: 150 }
+        ];
+
+        function populateTable(tableId, data) {
+            const tableBody = document.getElementById(tableId);
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${row.no}</td>
+                    <td>${row.process}</td>
+                    <td class="symbol ${row.type}">${row.symbol}</td>
+                    <td>${row.tool}</td>
+                    <td>${row.time}</td>
+                `;
+                tableBody.appendChild(tr);
+            });
+        }
+
+        populateTable('headRacketTable', headRacketData);
+        populateTable('shaftRacketTable', shaftRacketData);
+        populateTable('handleRacketTable', handleRacketData);
+        populateTable('assemblyTable', assemblyData);
+    </script>
+</body>
+</html>
